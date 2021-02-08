@@ -27,4 +27,12 @@ public class PostgreDB {
         }
         return connection;
     }
+
+    /**
+     * Close DB connection
+     */
+    public static void closeConnection(Connection connection) throws SQLException {
+        connection.close();
+        // log.log(Level.INFO, "Closed connection to Database: " + DB_URL);
+    }
 }
