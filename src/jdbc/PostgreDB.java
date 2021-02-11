@@ -1,9 +1,6 @@
 package jdbc;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class PostgreDB {
     //  Database credentials
@@ -60,4 +57,30 @@ public class PostgreDB {
 
         return flag;
     }
+
+    /**
+     * Method checks current push from table USERS
+     * return true when current e_mail has flag true in the table
+     */
+    public static boolean checkPush(String e_mail) {
+        boolean flag = false;
+        try {
+            Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select push from Accounts where e_mail=" + "\'" + e_mail + "\'");
+            while (rs.next()) {
+                if (rs.getBoolean("push") == true)
+                    flag = true;
+            }
+            statement.close();
+            rs.close();
+            closeConnection(connection);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return flag;
+    }
+
 }
