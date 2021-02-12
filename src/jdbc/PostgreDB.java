@@ -82,5 +82,27 @@ public class PostgreDB {
 
         return flag;
     }
+    /**
+     * Ьуе
+     * */
+    public static boolean my() {
+        boolean flag = false;
+        try {
+            Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement("insert into ACCOUNTS (e_mail,password,devicetoken,push) values (?,?,?,?)");
+            statement.setString(1, e_mail);
+            statement.setString(2, password);
+            statement.setString(3, deviceToken);
+            statement.setBoolean(4, false);
+            statement.executeUpdate();
+            statement.close();
+            closeConnection(connection);
+            flag = true;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
+
+        return flag;
+    }
 }
