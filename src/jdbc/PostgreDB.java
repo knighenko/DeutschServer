@@ -115,4 +115,29 @@ public class PostgreDB {
 
         return flag;
     }
+
+    /**
+     * Method return all lesoons
+     * */
+    public static String getLessons() {
+        StringBuffer response=new StringBuffer();
+        boolean flag = false;
+        try {
+            Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select url from Lessons");
+            while (rs.next()) {
+               response.append("{").append(rs.getString("url")).append("}");
+            }
+            statement.close();
+            rs.close();
+            closeConnection(connection);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+
+        return response.toString();
+    }
 }
