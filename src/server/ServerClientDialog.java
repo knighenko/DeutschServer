@@ -1,5 +1,7 @@
 package server;
 
+import jdbc.PostgreDB;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -43,10 +45,10 @@ public class ServerClientDialog implements Runnable {
         switch (retval) {
             case "1":
                 try {
-                   // responseToAndroid = String.valueOf(PostgresDB.checkUser(array[1], array[2]));
+                    responseToAndroid = String.valueOf(PostgreDB.checkUser(array[1], array[2]));
                     break;
                 } catch (Exception e) {
-                    return requestAndroid;
+                    return responseToAndroid;
                 }
             case "2":
                // responseToAndroid = String.valueOf(PostgresDB.createUser(array[1], array[2], array[3]));

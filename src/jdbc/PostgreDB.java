@@ -4,8 +4,8 @@ import java.sql.*;
 
 public class PostgreDB {
     //  Database credentials
-    static final String DB_URL = "jdbc:postgresql://127.0.0.1:5432/mydb";
-    static final String USER = "myuser";
+    static final String DB_URL = "jdbc:postgresql://127.0.0.1:5432/ddb";
+    static final String USER = "duser";
     static final String PASS = "123";
     /**
      * Create DB connection
@@ -57,7 +57,30 @@ public class PostgreDB {
 
         return flag;
     }
+    /**
+     * Method checks current e_mail and password in table USERS
+     * return true when current e_mail is in the table
+     */
+    public static boolean checkUser(String e_mail, String password) {
+        boolean flag = false;
+        try {
+            Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select * from Accounts where e_mail=" + "\'" + e_mail + "\'");
+            while (rs.next()) {
+                if (password.equals(rs.getString("password")))
+                    flag = true;
+            }
+            statement.close();
+            rs.close();
+            closeConnection(connection);
 
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return flag;
+    }
     /**
      * Method checks current push from table USERS
      * return true when current e_mail has flag true in the table
