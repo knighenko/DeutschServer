@@ -125,9 +125,9 @@ public class PostgreDB {
         try {
             Connection connection = getConnection();
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select url from Lessons");
+            ResultSet rs = statement.executeQuery("select youtubeurl from Lessons");
             while (rs.next()) {
-               response.append("{").append(rs.getString("url")).append("}");
+               response.append("{").append(rs.getString("youtubeurl")).append("}");
             }
             statement.close();
             rs.close();
