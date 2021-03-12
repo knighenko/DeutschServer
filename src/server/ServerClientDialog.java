@@ -51,11 +51,17 @@ public class ServerClientDialog implements Runnable {
                     return responseToAndroid;
                 }
             case "2":
-                responseToAndroid = String.valueOf(PostgreDB.getLessons());
+                responseToAndroid = PostgreDB.getLessons();
                 break;
-            case "3":
-               // responseToAndroid = String.valueOf(PostgreDB.createUser(array[1], array[2], array[3]));
+            case "3": {
+             responseToAndroid=String.valueOf(PostgreDB.createUserLessonTasks(array[2]));
+             //   responseToAndroid = PostgreDB.getTasks(Integer.parseInt(array[1]));
+            }
                 break;
+            case "4":
+                responseToAndroid = String.valueOf(PostgreDB.addTask(array[1], array[2], Integer.parseInt(array[3])));
+                break;
+
 
         }
         return responseToAndroid;
