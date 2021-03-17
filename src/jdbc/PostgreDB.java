@@ -206,7 +206,7 @@ public class PostgreDB {
      * Method create  table e_mailLessonTasks
      * with tasks by lessonId
      */
-    public static boolean createUserLessonTasks(String e_mail) {
+    public static boolean createUserLessonTasks(String e_mail, int lessonId) {
         boolean flag = false;
         try {
 
@@ -216,6 +216,28 @@ public class PostgreDB {
             statement.executeUpdate();
             statement.close();
             closeConnection(connection);
+            /**-----------------*/
+            Connection connection1 = getConnection();
+            Statement statement1 = connection1.createStatement();
+            System.out.println("SOS!!!!!!!!!!!!!!!!");
+            ResultSet rs = statement.executeQuery("select id from Tasks where lessonId=" +"\'" + lessonId + "\'" );
+            statement1.close();
+            rs.close();
+            closeConnection(connection1);
+            while (rs.next()) {
+                System.out.println(rs.getInt(1));
+               /* System.out.println("Help!!!!!!!!!!!!!!!!");
+                PreparedStatement statement2 = connection.prepareStatement("insert into"+e_mail+"LessonTasks (taskid, checks) values (?,?)");
+               statement2.setInt(1,rs.getInt(1));
+               statement2.setBoolean(2,Boolean.FALSE);
+                statement.executeUpdate();
+                statement.close();
+                closeConnection(connection);
+                */
+
+            }
+
+            /**-----------------*/
             flag = true;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
