@@ -211,7 +211,7 @@ public class PostgreDB {
         try {
 
             Connection connection = getConnection();
-            String sql = "CREATE TABLE IF NOT EXISTS "+ e_mail+"LessonTasks ( TaskId integer ,    Checks boolean)" ;
+            String sql = "CREATE TABLE IF NOT EXISTS " + e_mail + "LessonTasks ( TaskId integer ,    Checks boolean)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.executeUpdate();
             statement.close();
@@ -219,24 +219,19 @@ public class PostgreDB {
             /**-----------------*/
             Connection connection1 = getConnection();
             Statement statement1 = connection1.createStatement();
-            System.out.println("SOS!!!!!!!!!!!!!!!!");
-            ResultSet rs = statement.executeQuery("select id from Tasks where lessonId=" +"\'" + lessonId + "\'" );
+            ResultSet rs = statement1.executeQuery("select id from Tasks where lessonId=" + "\'" + lessonId + "\'");
+
+            while (rs.next()) {
+                PreparedStatement statement2 = connection1.prepareStatement("insert into " + e_mail + "LessonTasks (taskid, checks) values (?,?)");
+                statement2.setInt(1, rs.getInt(1));
+                statement2.setBoolean(2, Boolean.FALSE);
+                statement2.executeUpdate();
+                statement2.close();
+
+            }
             statement1.close();
             rs.close();
             closeConnection(connection1);
-            while (rs.next()) {
-                System.out.println(rs.getInt(1));
-               /* System.out.println("Help!!!!!!!!!!!!!!!!");
-                PreparedStatement statement2 = connection.prepareStatement("insert into"+e_mail+"LessonTasks (taskid, checks) values (?,?)");
-               statement2.setInt(1,rs.getInt(1));
-               statement2.setBoolean(2,Boolean.FALSE);
-                statement.executeUpdate();
-                statement.close();
-                closeConnection(connection);
-                */
-
-            }
-
             /**-----------------*/
             flag = true;
         } catch (SQLException throwables) {
