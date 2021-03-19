@@ -2,6 +2,7 @@ package jdbc;
 
 import entity.Lesson;
 import entity.Task;
+import org.postgresql.util.PSQLException;
 
 import java.sql.*;
 
@@ -202,6 +203,7 @@ public class PostgreDB {
         return tasks.toString();
     }
 
+
     /**
      * Method create  table e_mailLessonTasks
      * with tasks by lessonId
@@ -211,7 +213,7 @@ public class PostgreDB {
         try {
 
             Connection connection = getConnection();
-            String sql = "CREATE TABLE IF NOT EXISTS " + e_mail + "LessonTasks ( TaskId integer ,    Checks boolean)";
+            String sql = "CREATE TABLE IF NOT EXISTS " + e_mail + "LessonTasks ( TaskId integer UNIQUE,    Checks boolean)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.executeUpdate();
             statement.close();
@@ -225,9 +227,12 @@ public class PostgreDB {
                 PreparedStatement statement2 = connection1.prepareStatement("insert into " + e_mail + "LessonTasks (taskid, checks) values (?,?)");
                 statement2.setInt(1, rs.getInt(1));
                 statement2.setBoolean(2, Boolean.FALSE);
-                statement2.executeUpdate();
-                statement2.close();
+                try {
+                    statement2.executeUpdate();
+                    statement2.close();
+                } catch (PSQLException exception) {
 
+                }
             }
             statement1.close();
             rs.close();
