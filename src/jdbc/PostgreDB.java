@@ -176,19 +176,49 @@ public class PostgreDB {
     }
 
     /**
-     * Method get tasks and answer from the table Tasks by lessonId
+     * Method gets tasks and answer from the table Tasks by lessonId
      */
     public static String getTasks(int lessonId) {
         StringBuffer tasks = new StringBuffer();
         try {
             Connection connection = getConnection();
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select russtring, deutschstring from Tasks where lessonId=" + "\'" + lessonId + "\'");
+            ResultSet rs = statement.executeQuery("select id, russtring, deutschstring from Tasks where lessonId=" + "\'" + lessonId + "\'");
 
             while (rs.next()) {
                 Task task = new Task();
-                task.setRus(rs.getString(1));
-                task.setDeu(rs.getString(2));
+                task.setId(rs.getInt(1));
+                task.setRus(rs.getString(2));
+                task.setDeu(rs.getString(3));
+                tasks.append(task);
+
+            }
+            statement.close();
+            rs.close();
+            closeConnection(connection);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        System.out.println(tasks.toString());
+        return tasks.toString();
+    }
+
+    /**
+     * Method gets users tasks, answer  and checks from the table UserLessonTasks
+     */
+    public static String getUserTasks() {
+        StringBuffer tasks = new StringBuffer();
+        try {
+            Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery("select id, russtring, deutschstring from Tasks where lessonId=" + "\'" + lessonId + "\'");
+
+            while (rs.next()) {
+                Task task = new Task();
+                task.setId(rs.getInt(1));
+                task.setRus(rs.getString(2));
+                task.setDeu(rs.getString(3));
                 tasks.append(task);
 
             }
@@ -208,8 +238,8 @@ public class PostgreDB {
      * Method create  table e_mailLessonTasks
      * with tasks by lessonId
      */
-    public static boolean createUserLessonTasks(String e_mail, int lessonId) {
-        boolean flag = false;
+    public static String createUserLessonTasks(String e_mail, int lessonId) {
+
         try {
 
             Connection connection = getConnection();
@@ -238,13 +268,13 @@ public class PostgreDB {
             rs.close();
             closeConnection(connection1);
             /**-----------------*/
-            flag = true;
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
 
-        return flag;
+        return getTasks(lessonId);
     }
 
     /**
