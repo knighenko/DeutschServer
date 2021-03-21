@@ -212,13 +212,14 @@ public class PostgreDB {
         try {
             Connection connection = getConnection();
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select id, russtring, deutschstring from Tasks where lessonId=");
+            ResultSet rs = statement.executeQuery("select * from "+e_mail+"LessonTasks");
 
             while (rs.next()) {
                 Task task = new Task();
                 task.setId(rs.getInt(1));
                 task.setRus(rs.getString(2));
                 task.setDeu(rs.getString(3));
+                task.setChecks(rs.getBoolean(4));
                 tasks.append(task);
 
             }
