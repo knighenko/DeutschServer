@@ -207,12 +207,12 @@ public class PostgreDB {
     /**
      * Method gets users tasks, answer  and checks from the table UserLessonTasks
      */
-    public static String getUserTasks() {
+    public static String getUserTasks(String e_mail) {
         StringBuffer tasks = new StringBuffer();
         try {
             Connection connection = getConnection();
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select id, russtring, deutschstring from Tasks where lessonId=" + "\'" + lessonId + "\'");
+            ResultSet rs = statement.executeQuery("select id, russtring, deutschstring from Tasks where lessonId=");
 
             while (rs.next()) {
                 Task task = new Task();
@@ -243,7 +243,7 @@ public class PostgreDB {
         try {
 
             Connection connection = getConnection();
-            String sql = "CREATE TABLE IF NOT EXISTS " + e_mail + "LessonTasks ( TaskId integer UNIQUE,    Checks boolean)";
+            String sql = "CREATE TABLE IF NOT EXISTS " + e_mail + "LessonTasks ( TaskId integer UNIQUE, Russtring TEXT, Deutschstring TEXT,   Checks boolean)";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.executeUpdate();
             statement.close();
@@ -251,12 +251,14 @@ public class PostgreDB {
             /**-----------------*/
             Connection connection1 = getConnection();
             Statement statement1 = connection1.createStatement();
-            ResultSet rs = statement1.executeQuery("select id from Tasks where lessonId=" + "\'" + lessonId + "\'");
+            ResultSet rs = statement1.executeQuery("select id,russtring,deutschstring  from Tasks where lessonId=" + "\'" + lessonId + "\'");
 
             while (rs.next()) {
-                PreparedStatement statement2 = connection1.prepareStatement("insert into " + e_mail + "LessonTasks (taskid, checks) values (?,?)");
+                PreparedStatement statement2 = connection1.prepareStatement("insert into " + e_mail + "LessonTasks (taskid,russtring,deutschstring, checks) values (?,?,?,?)");
                 statement2.setInt(1, rs.getInt(1));
-                statement2.setBoolean(2, Boolean.FALSE);
+                statement2.setString(2, rs.getString(2));
+                statement2.setString(3, rs.getString(3));
+                statement2.setBoolean(4, Boolean.FALSE);
                 try {
                     statement2.executeUpdate();
                     statement2.close();
@@ -274,7 +276,7 @@ public class PostgreDB {
         }
 
 
-        return getTasks(lessonId);
+        return getUserTasks(e_mail);
     }
 
     /**

@@ -7,6 +7,15 @@ public class Task {
     private int id;
     private String rus;
     private String deu;
+    private boolean checks;
+
+    public boolean isChecks() {
+        return checks;
+    }
+
+    public void setChecks(boolean checks) {
+        this.checks = checks;
+    }
 
     public int getId() {
         return id;
@@ -36,7 +45,7 @@ public class Task {
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder("{");
 
-        stringBuilder.append("\"id\":\"").append(id).append('\"').append(", \"rus\":\"").append(rus).append('\"').append(", \"deu\":\"").append(deu).append('\"').append("}");
+        stringBuilder.append("\"id\":\"").append(id).append('\"').append(", \"rus\":\"").append(rus).append('\"').append(", \"deu\":\"").append(deu).append('\"').append(", \"checks\":\"").append(checks).append('\"').append("}");
 
         return stringBuilder.toString();
     }
