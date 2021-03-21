@@ -212,7 +212,7 @@ public class PostgreDB {
         try {
             Connection connection = getConnection();
             Statement statement = connection.createStatement();
-            ResultSet rs = statement.executeQuery("select * from "+e_mail+"LessonTasks");
+            ResultSet rs = statement.executeQuery("select * from " + e_mail + "LessonTasks");
 
             while (rs.next()) {
                 Task task = new Task();
@@ -243,34 +243,46 @@ public class PostgreDB {
 
         try {
 
-            Connection connection = getConnection();
-            String sql = "CREATE TABLE IF NOT EXISTS " + e_mail + "LessonTasks ( TaskId integer UNIQUE, Russtring TEXT, Deutschstring TEXT,   Checks boolean)";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.executeUpdate();
-            statement.close();
-            closeConnection(connection);
-            /**-----------------*/
-            Connection connection1 = getConnection();
-            Statement statement1 = connection1.createStatement();
-            ResultSet rs = statement1.executeQuery("select id,russtring,deutschstring  from Tasks where lessonId=" + "\'" + lessonId + "\'");
+            Connection connection0 = getConnection();
+            String preSql = "SELECT * FROM INFORMATION_SCHEMA.TABLES where Table_name=" + "\'" + e_mail + "lessontasks" + "\'";
 
-            while (rs.next()) {
-                PreparedStatement statement2 = connection1.prepareStatement("insert into " + e_mail + "LessonTasks (taskid,russtring,deutschstring, checks) values (?,?,?,?)");
-                statement2.setInt(1, rs.getInt(1));
-                statement2.setString(2, rs.getString(2));
-                statement2.setString(3, rs.getString(3));
-                statement2.setBoolean(4, Boolean.FALSE);
-                try {
-                    statement2.executeUpdate();
-                    statement2.close();
-                } catch (PSQLException exception) {
+            Statement statement0 = connection0.createStatement();
+            ResultSet resultSet = statement0.executeQuery(preSql);
+            if (!resultSet.next()) {
+
+                Connection connection = getConnection();
+                String sql = "CREATE TABLE IF NOT EXISTS " + e_mail + "LessonTasks ( TaskId integer UNIQUE, Russtring TEXT, Deutschstring TEXT,   Checks boolean)";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.executeUpdate();
+                statement.close();
+                closeConnection(connection);
+                /**-----------------*/
+                Connection connection1 = getConnection();
+                Statement statement1 = connection1.createStatement();
+                ResultSet rs = statement1.executeQuery("select id,russtring,deutschstring  from Tasks where lessonId=" + "\'" + lessonId + "\'");
+
+                while (rs.next()) {
+                    PreparedStatement statement2 = connection1.prepareStatement("insert into " + e_mail + "LessonTasks (taskid,russtring,deutschstring, checks) values (?,?,?,?)");
+                    statement2.setInt(1, rs.getInt(1));
+                    statement2.setString(2, rs.getString(2));
+                    statement2.setString(3, rs.getString(3));
+                    statement2.setBoolean(4, Boolean.FALSE);
+
+                        statement2.executeUpdate();
+                        statement2.close();
 
                 }
+                statement1.close();
+                rs.close();
+                closeConnection(connection1);
+                /**-----------------*/
             }
-            statement1.close();
-            rs.close();
-            closeConnection(connection1);
-            /**-----------------*/
+
+            statement0.close();
+            resultSet.close();
+            connection0.close();
+
+
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
