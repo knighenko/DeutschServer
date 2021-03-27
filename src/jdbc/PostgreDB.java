@@ -293,6 +293,14 @@ public class PostgreDB {
     }
 
     /**
+     * Method writes true answer in table e_mailLessonTasks
+     */
+    public static String writeIntoUserLessonTasks(String e_mail, int lessonId) {
+        return "false";
+    }
+
+
+    /**
      * Method gets  lessonServerUrl from the table Lessons by id of lesson
      */
     public static String getServerUrlByIdLesson(String id) {
