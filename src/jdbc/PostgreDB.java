@@ -296,6 +296,7 @@ public class PostgreDB {
      * Method writes true answer in table e_mailLessonTasks
      */
     public static String writeIntoUserLessonTasks(String e_mail, int lessonId) {
+     //   PreparedStatement statement2 = connection1.prepareStatement("insert into " + e_mail + "LessonTasks (taskid,russtring,deutschstring, checks) values (?,?,?,?)");
         return "false";
     }
 
