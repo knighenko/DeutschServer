@@ -268,8 +268,8 @@ public class PostgreDB {
                     statement2.setString(3, rs.getString(3));
                     statement2.setBoolean(4, Boolean.FALSE);
 
-                        statement2.executeUpdate();
-                        statement2.close();
+                    statement2.executeUpdate();
+                    statement2.close();
 
                 }
                 statement1.close();
@@ -281,7 +281,6 @@ public class PostgreDB {
             statement0.close();
             resultSet.close();
             connection0.close();
-
 
 
         } catch (SQLException throwables) {
@@ -297,8 +296,11 @@ public class PostgreDB {
      */
     public static String writeIntoUserLessonTasks(String e_mail, int lessonId) {
         Connection connection = getConnection();
-     //   PreparedStatement statement2 = connection1.prepareStatement("insert into " + e_mail + "LessonTasks (taskid,russtring,deutschstring, checks) values (?,?,?,?)");
         try {
+
+            PreparedStatement statement = connection.prepareStatement("insert into " + e_mail + "LessonTasks (taskid,russtring,deutschstring, checks) values (?,?,?,?)");
+            statement.executeUpdate();
+            statement.close();
             closeConnection(connection);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
