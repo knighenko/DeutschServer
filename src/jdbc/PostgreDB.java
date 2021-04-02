@@ -297,7 +297,7 @@ public class PostgreDB {
     public static String writeIntoUserLessonTasks(String e_mail, int lessonId) {
         Connection connection = getConnection();
         try {
-
+/*Need to change statement*/
             PreparedStatement statement = connection.prepareStatement("insert into " + e_mail + "LessonTasks (taskid,russtring,deutschstring, checks) values (?,?,?,?)");
             statement.executeUpdate();
             statement.close();
